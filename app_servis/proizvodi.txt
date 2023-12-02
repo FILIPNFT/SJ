@@ -1,0 +1,3 @@
+{"naziv":"B12 , C i riblje ulje ","opis":"Nova vrsta vitamina ","kategorija":"Vitamini","cena":"850"}
+{"naziv":"probiotik","opis":"Lek protiv bola u stomaku","kategorija":"Lekovi","cena":"1500"}
+{"naziv":"Insulin","opis":"Lek za dijabetes","kategorija":"Lekovi","cena":"10000"}
