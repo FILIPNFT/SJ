@@ -1,4 +1,5 @@
 'use strict';
+const {Model} = require("sequelize");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -24,7 +25,6 @@ module.exports = {
       kategorija_id: {
         type: Sequelize.INTEGER,
         allowNull: false
-        // Ukloniti ili zakomentarisati references deo
       },
       createdAt: {
         allowNull: false,

@@ -1,5 +1,6 @@
 const express = require("express");
 const { sequelize, AlergijaDijagnoza, Kategorija, Narudzbina, Proizvod, ProizvodAlergijaDijagnoza, StavkaNarudzbine } = require("../models");
+const {router} = require("express/lib/application");
 const route = express.Router();
 
 route.use(express.json());

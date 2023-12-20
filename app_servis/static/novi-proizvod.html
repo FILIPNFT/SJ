@@ -56,8 +56,6 @@
       <div class="col-6">
         <label for="kategorija">Kategorija:</label>
         <select class="form-select" name="kategorija" id="kategorija">
-          <option value="1">Lek</option>
-          <option value="2">Vitamin</option>
         </select>
       </div>
       <div class="col-6">
@@ -74,52 +72,64 @@
 </div>
 
 <script>
-  function validacija() {
-    var validno = true;
-    var nazivInput = document.getElementById("naziv");
+window.addEventListener('load', function() {
+  fetch('http://localhost:9000/kategorija')
+          .then(response => response.json())
+          .then(kategorije => {
+            const selectElement = document.getElementById('kategorija');
+            selectElement.innerHTML = '';
+            kategorije.forEach(kategorija => {
+              selectElement.add(new Option(kategorija.naziv, kategorija.id));
+            });
+          })
+          .catch(error => console.error('Došlo je do greške:', error));
+});
+function validacija() {
+  var validno = true;
+  var nazivInput = document.getElementById("naziv");
 
-    if (nazivInput.value.length < 3) {
-      validno = false;
-      nazivInput.classList.add("error");
-      nazivInput.classList.remove("success");
-    } else {
-      nazivInput.classList.add("success");
-      nazivInput.classList.remove("error");
-    }
-    return validno;
+  if (nazivInput.value.length < 3) {
+    validno = false;
+    nazivInput.classList.add("error");
+    nazivInput.classList.remove("success");
+  } else {
+    nazivInput.classList.add("success");
+    nazivInput.classList.remove("error");
+  }
+  return validno;
+}
+
+document.getElementById("forma").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  if (!validacija()) {
+    return;
   }
 
-  document.getElementById("forma").addEventListener("submit", function(event) {
-    event.preventDefault();
+  var noviProizvod = {
+    naziv: document.getElementById("naziv").value,
+    opis: document.getElementById("opis").value,
+    kategorija_id: document.getElementById("kategorija").value,
+    cena: document.getElementById("cena").value
+  };
 
-    if (!validacija()) {
-      return;
-    }
-
-    var noviProizvod = {
-      naziv: document.getElementById("naziv").value,
-      opis: document.getElementById("opis").value,
-      kategorija_id: document.getElementById("kategorija").value,
-      cena: document.getElementById("cena").value
-    };
-
-    fetch("http://localhost:9000/proizvod/novi-proizvod", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(noviProizvod)
-    })
-            .then(response => response.json())
-            .then(data => {
-              alert('Proizvod uspešno dodat.');
-              window.location.href = "proizvodi.html";
-            })
-            .catch(error => {
-              console.error('Došlo je do greške:', error);
-              alert('Došlo je do greške prilikom dodavanja proizvoda: ' + error.message);
-            });
-  });
+fetch("http://localhost:9000/proizvod/novi-proizvod", {
+  method: "POST",
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(noviProizvod)
+})
+        .then(response => response.json())
+        .then(data => {
+          alert('Proizvod uspešno dodat.');
+          window.location.href = "proizvodi.html";
+        })
+        .catch(error => {
+          console.error('Došlo je do greške:', error);
+          alert('Došlo je do greške prilikom dodavanja proizvoda: ' + error.message);
+        });
+});
 </script>
 
 </body>

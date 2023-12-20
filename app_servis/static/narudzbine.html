@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Detalji Alergije ili Dijagnoze</title>
+	<title>Narudzbine</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="main.css">
 </head>
@@ -15,19 +15,19 @@
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav">
 					<li class="nav-item">
-						<a class="nav-link" href="index.html">Dashboard</a>
+						<a class="nav-link"href="index.html">Dashboard</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="proizvodi.html">Ponuda</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="narudzbine.html">Narudžbine</a>
+						<a class="nav-link active" aria-current="page" href="narudzbine.html">Narudžbine</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="kategorije.html">Kategorije</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link active" aria-current="page" href="alergijeDijagnoze.html">Alergije/Dijagnoze</a>
+						<a class="nav-link" href="alergijeDijagnoze.html">Alergije/Dijagnoze</a>
 					</li>
 				</ul>
 			</div>
@@ -35,13 +35,47 @@
 	</nav>
 </div>
 
-<main class="pharmacy-card">
+<div class="pharmacy-card mt-4">
 	<div class="logo-container">
 		<img src="Apoteka.jpeg" alt="Pharmacy Logo" class="pharmacy-logo">
 	</div>
-	<h1>Detalji Alergije ili Dijagnoze</h1>
-	<!-- Ovde će biti prikazani detalji o izabranoj alergiji ili dijagnozi -->
-</main>
+	<h1 class="mb-4">Narudžbine</h1>
+
+	<table class="table">
+		<thead>
+		<tr>
+			<th>Ime i prezime</th>
+			<th>Status</th>
+			<th>Cena</th>
+			<th>Adresa</th>
+			<th>Telefon</th>
+			<th>Akcija</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>Mihajlo Mihajlovic</td>
+			<td>Obrada</td>
+			<td>1500</td>
+			<td>Trg Republike 15</td>
+			<td>061 555 444</td>
+			<td>
+				<a href="narudzbina.html?id=1" class="btn btn-link">Detalji</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Petar Petrovic</td>
+			<td>Dostava</td>
+			<td>699</td>
+			<td>Njegoseva 47</td>
+			<td>063 361 163</td>
+			<td>
+				<a href="narudzbina.html?id=2" class="btn btn-link">Detalji</a>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
 
 </body>
 </html>

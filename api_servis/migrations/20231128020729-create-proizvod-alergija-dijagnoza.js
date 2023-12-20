@@ -9,8 +9,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      naziv: {
-        type: Sequelize.STRING
+      proizvod_id: {
+        type: Sequelize.INTEGER
+      },
+      alergijaDijagnoza_id: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,

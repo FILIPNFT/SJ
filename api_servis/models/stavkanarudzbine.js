@@ -8,8 +8,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   StavkaNarudzbine.init({
-    narudzbina_id: DataTypes.INTEGER,
-    proizvod_id: DataTypes.INTEGER,
     komada: DataTypes.INTEGER,
     jedinicna_cena: DataTypes.DECIMAL
   }, {

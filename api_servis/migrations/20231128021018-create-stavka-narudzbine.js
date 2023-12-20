@@ -9,7 +9,16 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      narudzbina_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
+      proizvod_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
       komada: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       createdAt: {

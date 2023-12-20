@@ -4,7 +4,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Proizvod extends Model {
     static associate({ Kategorija,AlergijaDijagnoza, ProizvodAlergijaDijagnoza, StavkaNarudzbine }) {
-      this.belongsTo(Kategorija, { foreignKey: 'kategorija_id', as: 'kategorija' });
+      this.belongsTo(Kategorija, { foreignKey: "kategorija_id", as: "kategorija"});
       this.hasMany(StavkaNarudzbine, { foreignKey: 'proizvod_id', as: 'stavkeNarudzbine' });
       this.belongsToMany(AlergijaDijagnoza, { through: ProizvodAlergijaDijagnoza, foreignKey: 'proizvod_id', otherKey: 'alergijaDijagnoza_id', as: 'alergijeDijagnoze' });
     }
@@ -23,7 +23,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     }
-    // kategorija_id se dodaje kroz asocijaciju
   }, {
     sequelize,
     modelName: 'Proizvod',

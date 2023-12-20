@@ -8,8 +8,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   ProizvodAlergijaDijagnoza.init({
-    proizvod_id: DataTypes.INTEGER,
-    alergijaDijagnoza_id: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'ProizvodAlergijaDijagnoza',

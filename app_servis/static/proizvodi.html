@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Proizvodi</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+<div class="row">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="index.html">Dashboard</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" href="proizvodi.html">Ponuda</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="narudzbine.html">Narudžbine</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="kategorije.html">Kategorije</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="alergijeDijagnoze.html">Alergije/Dijagnoze</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</div>
+
+<div class="pharmacy-card mt-4">
+	<div class="logo-container">
+		<img src="Apoteka.jpeg" alt="Pharmacy Logo" class="pharmacy-logo">
+	</div>
+	<h1>Spisak proizvoda</h1>
+	<a href="novi-proizvod.html" class="btn btn-primary float-end mb-3">Novi proizvod</a>
+
+	<table class="table table-striped">
+		<thead>
+		<tr>
+			<th>Naziv</th>
+			<th>Opis</th>
+			<th>Kategorija</th>
+			<th>Cena</th>
+			<th>Akcija</th>
+		</tr>
+		</thead>
+		<tbody id="spisak">
+		<tr>
+			<td>Brufen</td>
+			<td>Lek</td>
+			<td>1000</td>
+			<td>
+				<button class="btn btn-primary" onclick="">Promena cene</button>
+				<a href="proizvod.html?id=1" class="btn btn-primary">Izmeni</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Mix C,B12</td>
+			<td>Vitamin</td>
+			<td>600</td>
+			<td>
+				<button class="btn btn-primary" onclick="">Promena cene</button>
+				<a href="proizvod.html?id=2" class="btn btn-primary">Izmeni</a>
+			</td>
+		</tr>
+		<tr>
+			<td>Multi super vitamin</td>
+			<td>Vitamin</td>
+			<td>900</td>
+			<td>
+				<button class="btn btn-primary" onclick="">Promena cene</button>
+				<a href="proizvod.html?id=3" class="btn btn-primary">Izmeni</a>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+	<button class="btn btn-primary" onclick="window.location.reload();">Osveži spisak</button>
+</div>
+<script>
+    window.addEventListener("load", function() {
+        fetch('http://localhost:9000/proizvod/')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById("spisak");
+                tbody.innerHTML = '';
+                for (let i = 0; i < data.length; i++) {
+                    let tr = document.createElement("tr");
+                    tr.dataset.id = data[i].id;
+
+                    let td1 = document.createElement("td");
+                    td1.innerHTML = data[i].naziv;
+                    tr.appendChild(td1);
+
+                    let td2 = document.createElement("td");
+                    td2.innerHTML = data[i].opis;
+                    tr.appendChild(td2);
+
+                    let td3 = document.createElement("td");
+                    td3.innerHTML = data[i].kategorija ? data[i].kategorija.naziv : 'N/A';
+                    tr.appendChild(td3);
+
+                    let td4 = document.createElement("td");
+                    td4.innerHTML = data[i].cena;
+                    tr.appendChild(td4);
+
+                    let td5 = document.createElement("td");
+
+                    let btn = document.createElement("button");
+                    btn.className = "btn btn-primary";
+                    btn.innerHTML = "Promena cene";
+                    btn.addEventListener("click", function() {
+                        var novaCena = prompt("Unesi novu cenu:");
+                        if (novaCena) {
+                            var tr = this.closest("tr");
+                            var id = tr.dataset.id;
+
+                            fetch(`http://localhost:9000/promeni-cenu/${id}`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ cena: novaCena })
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data && data.id) {
+                                        document.querySelector(`#spisak > tr[data-id='${data.id}'] > td:nth-child(4)`).innerHTML = data.cena;
+                                    }
+                                })
+                                .catch(err => {
+                                    alert("Desila se greška");
+                                    console.error(err);
+                                });
+                        }
+                    });
+                    td5.appendChild(btn);
+
+                    let a = document.createElement("a");
+                    a.id = "izmeni";
+                    a.className = "btn btn-primary";
+                    a.innerHTML = "Izmeni";
+                    a.href = `proizvod.html?id=${data[i].id}`;
+                    td5.appendChild(a);
+
+                    tr.appendChild(td5);
+                    tbody.appendChild(tr);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+</script>
+
+</body>
+</html>

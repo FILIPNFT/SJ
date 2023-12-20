@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Detalji Alergije ili Dijagnoze</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+<div class="row">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="index.html">Dashboard</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="proizvodi.html">Ponuda</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="narudzbine.html">Narudžbine</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="kategorije.html">Kategorije</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" href="alergijeDijagnoze.html">Alergije/Dijagnoze</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</div>
+
+<main class="pharmacy-card">
+	<div class="logo-container">
+		<img src="Apoteka.jpeg" alt="Pharmacy Logo" class="pharmacy-logo">
+	</div>
+	<h1>Alergije i Dijagnoze</h1>
+	<div id="lista-alergijaDijagnoza">
+		<a class="btn btn-primary float-end mb-3" href="nova-alergijaDijagnoza.html">Dodaj novu</a>
+		<table class="table table-striped">
+			<thead>
+			<tr>
+				<th class="text-center align-middle">Index</th>
+				<th class="text-center align-middle">Naziv</th>
+				<th class="text-center align-middle">Akcija</th>
+			</tr>
+			</thead>
+			<tbody id="spisak">
+			<tr>
+				<td>1</td>
+				<td>Dijabetes</td>
+				<td>
+					<button class="btn btn-primary" onclick="">Promeni naziv</button>
+				</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>Aspirin</td>
+				<td>
+					<button class="btn btn-primary" onclick="">Promeni naziv</button>
+				</td>
+			</tr>
+			<tr>
+				<td>3</td>
+				<td>Astma</td>
+				<td>
+					<button class="btn btn-primary" onclick="">Promeni naziv</button>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+		<button class="btn btn-primary" onclick="window.location.reload();">Osveži spisak</button>
+	</div>
+</main>
+<script>
+window.addEventListener("load", function() {
+    fetch('http://localhost:9000/alergijaDijagnoza/')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.getElementById("spisak");
+            tbody.innerHTML = '';
+            for (let i = 0; i < data.length; i++) {
+                let tr = document.createElement("tr");
+                tr.dataset.id = data[i].id;
+
+                let td1 = document.createElement("td");
+                td1.className = "text-center align-middle";
+                td1.innerHTML = data[i].id;
+                tr.appendChild(td1);
+
+                let td2 = document.createElement("td");
+                td2.className = "text-center align-middle";
+                td2.innerHTML = data[i].naziv;
+                tr.appendChild(td2);
+
+                let td5 = document.createElement("td");
+                td5.className = "text-center align-middle";
+
+                let btn = document.createElement("button");
+                btn.className = "btn btn-primary";
+                btn.innerHTML = "Promeni naziv";
+                btn.addEventListener("click", function() {
+                    var noviNaziv = prompt("Unesi novi naziv:");
+                    if (noviNaziv) {
+                        var tr = this.closest("tr");
+                        var id = tr.dataset.id;
+
+                        fetch(`http://localhost:9000/promeni-naziv/${id}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ naziv: noviNaziv, tip: "alergijaDijagnoza"})
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data && data.id) {
+                                    document.querySelector(`#spisak > tr[data-id='${data.id}'] > td:nth-child(2)`).innerHTML = data.naziv;
+                                }
+                            })
+                            .catch(err => {
+                                alert("Desila se greška");
+                                console.error(err);
+                            });
+                    }
+                });
+                td5.appendChild(btn);
+
+                let a = document.createElement("a");
+                a.id = "btnObrisi";
+                a.className = "btn btn-danger";
+                a.innerHTML = "Obrisi";
+                a.addEventListener('click', function () {
+                    var id = tr.dataset.id;
+
+                    fetch(`http://localhost:9000/alergijaDijagnoza/${id}`, { method: "DELETE" })
+                        .then(resp => resp.json())
+                        .then(data => {
+                            alert("Obrisan je zapis iz tabele!");
+                        })
+                        .catch(error => {
+                            console.error('Došlo je do greške:', error);
+                        });
+                });
+                td5.appendChild(a);
+
+                tr.appendChild(td5);
+                tbody.appendChild(tr);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+});
+</script>
+</body>
+</html>
